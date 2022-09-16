@@ -38,9 +38,39 @@ To install utilize this in your terminal:
 | :---------- | :--------| :--------|
 | `nickname`  | `string` | **True** |
 
-#### Receiving The Atual Rotation
+#### Receiving The Current Rotation
 
 ```js
   const rotation = await lolApi.rotation();
 ```
+
+#### Receiving Ranked Informations
+
+```js
+  const user = await lolApi.rankUser(nickname);
+```
+
+| Parameter   | Type     | Required |
+| :---------- | :--------| :--------|
+| `nickname`  | `string` | **True** |
+
+#### Receiving Last Match Informations
+
+```js
+  const user = await lolApi.lastMatch(nickname);
+```
+
+| Parameter   | Type     | Required |
+| :---------- | :--------| :--------|
+| `nickname`  | `string` | **True** |
+
+#### Receiving Actual Match Informations
+
+```js
+  const user = await lolApi.inGame(nickname);
+```
+
+| Parameter   | Type     | Required |
+| :---------- | :--------| :--------|
+| `nickname`  | `string` | **True** |
 

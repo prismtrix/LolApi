@@ -10,4 +10,8 @@ const rank = await lolApi.rankUser('Sopa Do TK');
 
 const user = await lolApi.searchUser('Sopa Do TK');
 
-console.log(rotation, rank, user)
+const lastMatch = await lolApi.lastMatch('Sopa Do TK')
+
+const currentMatch = await lolApi.inGame('Sopa Do TK')
+
+console.log(rotation, rank, user, lastMatch, currentMatch)

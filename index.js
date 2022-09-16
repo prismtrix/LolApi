@@ -31,37 +31,39 @@ class LolApi {
     if (data.status) {
       switch (data.status.status_code) {
         case 403:
-          return "Key Inválida";
+          data = "Key Inválida";
           break;
 
         case 429:
-          return "Rate Limit Excedido";
+          data = "Rate Limit Excedido";
           break;
 
         case 401:
-          return "Não Autorizado";
+          data = "Não Autorizado";
           break;
 
         case 404:
-          return "Usuário Não Encontrado";
+          data = "Usuário Não Encontrado";
           break;
       }
+      return data
     }
 
     if (data2.status) {
       switch (data2.status.status_code) {
         case 403:
-          return "Key Inválida";
+          data2 = "Key Inválida";
           break;
 
         case 429:
-          return "Rate Limit Excedido Aguarde Alguns Minutos";
+          data2 = "Rate Limit Excedido Aguarde Alguns Minutos";
           break;
 
         case 401:
-          return "Não Autorizado";
+          data2 = "Não Autorizado";
           break;
       }
+      return data2
     }
 
     return data2;
@@ -93,19 +95,19 @@ class LolApi {
     if (data.status) {
       switch (data.status.status_code) {
         case 403:
-          return "Key Inválida";
+          data = "Key Inválida";
           break;
 
         case 429:
-          return "Rate Limit Excedido";
+          data = "Rate Limit Excedido";
           break;
 
         case 401:
-          return "Não Autorizado";
+          data = "Não Autorizado";
           break;
 
         case 404:
-          return "Usuário Não Encontrado";
+          data = "Usuário Não Encontrado";
           break;
       }
     }
@@ -113,17 +115,18 @@ class LolApi {
     if (data2.status) {
       switch (data2.status.status_code) {
         case 403:
-          return "Key Inválida";
+          data2 = "Key Inválida";
           break;
 
         case 429:
-          return "Rate Limit Excedido Aguarde Alguns Minutos";
+          data2 = "Rate Limit Excedido Aguarde Alguns Minutos";
           break;
 
         case 401:
-          return "Não Autorizado";
+          data2 = "Não Autorizado";
           break;
       }
+      return data2
     }
 
     if (data2[0] || data2[1] || data2[2]) {
@@ -165,21 +168,22 @@ class LolApi {
     if (data.status) {
       switch (data.status.status_code) {
         case 403:
-          return "Key Inválida";
+          data = "Key Inválida";
           break;
 
         case 429:
-          return "Rate Limit Excedido Aguarde Alguns Minutos";
+          data = "Rate Limit Excedido Aguarde Alguns Minutos";
           break;
 
         case 401:
-          return "Não Autorizado";
+          data = "Não Autorizado";
           break;
 
         case 404:
-          return "Data Não Encontrada";
+          data = "Data Não Encontrada";
           break;
       }
+      return data
     }
 
     data.freeChampionIds.forEach((id, index) => {
@@ -195,6 +199,154 @@ class LolApi {
     });
 
     return data;
+  }
+
+  async lastMatch(name) {
+    const nameReplace = name.replaceAll(" ", "+");
+
+    const response = await fetch(
+      `https://br1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${nameReplace}`,
+      {
+        method: "GET",
+        headers: { "X-Riot-Token": this.key },
+      }
+    );
+
+    let data = await response.json();
+
+    const response2 = await fetch(
+      `https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/${data.puuid}/ids`,
+      {
+        method: "GET",
+        headers: { "X-Riot-Token": this.key },
+      }
+    );
+
+    let data2 = await response2.json();
+
+    const response3 = await fetch(
+      `https://americas.api.riotgames.com/lol/match/v5/matches/${data2[0]}`,
+      {
+        method: "GET",
+        headers: { "X-Riot-Token": this.key },
+      }
+    );
+
+    let data3 = await response3.json();
+
+    if (data.status) {
+      switch (data.status.status_code) {
+        case 403:
+          data = "Key Inválida";
+          break;
+
+        case 429:
+          data = "Rate Limit Excedido";
+          break;
+
+        case 401:
+          data = "Não Autorizado";
+          break;
+
+        case 404:
+          data = "Usuário Não Encontrado";
+          break;
+      }
+      return data3
+    }
+
+    if (data2.status) {
+      switch (data2.status.status_code) {
+        case 403:
+          data3 = "Key Inválida";
+          break;
+
+        case 429:
+          data3 = "Rate Limit Excedido Aguarde Alguns Minutos";
+          break;
+
+        case 401:
+          data3 = "Não Autorizado";
+          break;
+      }
+      return data3
+    }
+    
+    data3.info.participants.forEach((id, index) => {
+        data3.info.participants[index].championName = champions.find(
+          (element) => element.id == id.championId
+        ).name;
+    });
+
+    return data3
+  }
+
+  async inGame(name) {
+    const nameReplace = name.replaceAll(" ", "+");
+
+    const response = await fetch(
+      `https://br1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${nameReplace}`,
+      {
+        method: "GET",
+        headers: { "X-Riot-Token": this.key },
+      }
+    );
+
+    let data = await response.json();
+
+    const response2 = await fetch(
+      `https://br1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/${data.id}`,
+      {
+        method: "GET",
+        headers: { "X-Riot-Token": this.key },
+      }
+    );
+
+    let data2 = await response2.json();
+
+    if (data.status) {
+      console.log(data.status.status_code)
+      switch (data.status.status_code) {
+        case '403':
+          data2 = "Key Inválida";
+          break;
+
+        case '429':
+          data2 = "Rate Limit Excedido";
+          break;
+
+        case '401':
+          data2 = "Não Autorizado";
+          break;
+
+        case '404':
+          data2 = "Usuário Não Encontrado";
+          break;
+      }
+    }
+
+    if (data2.status) {
+      switch (data2.status.status_code) {
+        case 403:
+          data2 = "Key Inválida";
+          break;
+
+        case 429:
+          data2 = "Rate Limit Excedido Aguarde Alguns Minutos";
+          break;
+
+        case 401:
+          data2 = "Não Autorizado";
+          break;
+
+        case 404:
+          data2 = 'Usuário Não Está Em Partida'
+          break;
+      }
+    }
+
+    return data2
+
   }
 
 }
