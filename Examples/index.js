@@ -2,7 +2,7 @@
 import LolApi from "loldata.js";
 */
 
-const lolApi = new LolApi()
+const lolApi = new LolApi('YOUR_KEY_HERE')
 
 const rotation = await lolApi.rotation();
 

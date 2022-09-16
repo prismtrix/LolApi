@@ -196,7 +196,7 @@ class LolApi {
 
     return data;
   }
-  
+
 }
 
 export default LolApi;
