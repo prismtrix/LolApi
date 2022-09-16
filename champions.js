@@ -109,7 +109,7 @@ const champions = [
 },
 {
     id: 28,
-    name: 'Evelyn'
+    name: 'Evelynn'
 },
 {
     id: 29,
