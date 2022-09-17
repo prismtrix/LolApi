@@ -345,6 +345,12 @@ class LolApi {
       }
     }
 
+    data2.participants.forEach((id, index) => {
+      data2.participants[index].championName = champions.find(
+        (element) => element.id == id.championId
+      ).name;
+  });
+
     return data2
 
   }
