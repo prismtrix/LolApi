@@ -323,6 +323,7 @@ class LolApi {
           data2 = "Usuário Não Encontrado";
           break;
       }
+      return data
     }
 
     if (data2.status) {
@@ -343,6 +344,7 @@ class LolApi {
           data2 = 'Usuário Não Está Em Partida'
           break;
       }
+      return data2
     }
 
     data2.participants.forEach((id, index) => {
