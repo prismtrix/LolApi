@@ -1,4 +1,6 @@
-import champions from "./champions.js";
+import champions from "./Src/champions.js";
+
+import runes from "./Src/runes.js";
 
 class LolApi {
   constructor(key) {
@@ -348,9 +350,24 @@ class LolApi {
     }
 
     data2.participants.forEach((id, index) => {
-      data2.participants[index].championName = champions.find(
+      id.championName = champions.find(
         (element) => element.id == id.championId
       ).name;
+
+      id.perks.perkStyle = runes.find(
+        (element) => element.id == id.perks.perkStyle
+      ).name
+
+      id.perks.perkSubStyle = runes.find(
+        (element) => element.id == id.perks.perkSubStyle
+      ).name
+
+      id.perks.perkIds.forEach((ids, index) => {
+        id.perks.perkIds[index] = runes.find(
+          (element) => element.id == ids
+        ).name
+      });
+
   });
 
     return data2
