@@ -47,8 +47,12 @@ class LolApi {
         case 404:
           data = "Usuário Não Encontrado";
           break;
+
+        case 400:
+          data = "Usuário Não Encontrado";
+          break;
       }
-      return data
+      return data;
     }
 
     if (data2.status) {
@@ -64,8 +68,12 @@ class LolApi {
         case 401:
           data2 = "Não Autorizado";
           break;
+
+        case 400:
+          data2 = "Usuário Não Encontrado";
+          break;
       }
-      return data2
+      return data2;
     }
 
     return data2;
@@ -111,7 +119,12 @@ class LolApi {
         case 404:
           data = "Usuário Não Encontrado";
           break;
+
+        case 400:
+          data = "Usuário Não Encontrado";
+          break;
       }
+      return data;
     }
 
     if (data2.status) {
@@ -127,27 +140,19 @@ class LolApi {
         case 401:
           data2 = "Não Autorizado";
           break;
+
+        case 400:
+          data2 = "Usuário Não Encontrado";
+          break;
       }
-      return data2
+      return data2;
     }
 
-    if (data2[0] || data2[1] || data2[2]) {
-      const name1 = champions.find(
-        (element) => element.id == data2[0].championId
-      );
-      const name2 = champions.find(
-        (element) => element.id == data2[1].championId
-      );
-      const name3 = champions.find(
-        (element) => element.id == data2[2].championId
-      );
-
-      if (data2[0]) data2[0].championName = name1.name;
-      if (data2[1]) data2[1].championName = name2.name;
-      if (data2[2]) data2[2].championName = name3.name;
-
-      data2 = [data2[0], data2[1], data2[2]];
-    }
+    data2.forEach((champion) => {
+      champion.championName = champions.find(
+        (element) => element.id == champion.championId
+      ).name;
+    });
 
     const search = {
       user: data,
@@ -184,8 +189,12 @@ class LolApi {
         case 404:
           data = "Data Não Encontrada";
           break;
+
+        case 400:
+          data = "Usuário Não Encontrado";
+          break;
       }
-      return data
+      return data;
     }
 
     data.freeChampionIds.forEach((id, index) => {
@@ -239,22 +248,26 @@ class LolApi {
     if (data.status) {
       switch (data.status.status_code) {
         case 403:
-          data = "Key Inválida";
+          data3 = "Key Inválida";
           break;
 
         case 429:
-          data = "Rate Limit Excedido";
+          data3 = "Rate Limit Excedido";
           break;
 
         case 401:
-          data = "Não Autorizado";
+          data3 = "Não Autorizado";
           break;
 
         case 404:
-          data = "Usuário Não Encontrado";
+          data3 = "Usuário Não Encontrado";
+          break;
+
+        case 400:
+          data3 = "Usuário Não Encontrado";
           break;
       }
-      return data3
+      return data3;
     }
 
     if (data2.status) {
@@ -270,17 +283,50 @@ class LolApi {
         case 401:
           data3 = "Não Autorizado";
           break;
+
+        case 404:
+          data3 = "Não Encontrado";
+          break;
+
+        case 400:
+          data3 = "Usuário Não Encontrado";
+          break;
       }
-      return data3
+      return data3;
     }
-    
+
+    if (data3.status) {
+      switch (data3.status.status_code) {
+        case 403:
+          data3 = "Key Inválida";
+          break;
+
+        case 429:
+          data3 = "Rate Limit Excedido Aguarde Alguns Minutos";
+          break;
+
+        case 401:
+          data3 = "Não Autorizado";
+          break;
+
+        case 404:
+          data3 = "Não Encontrado";
+          break;
+
+        case 400:
+          data3 = "Usuário Não Encontrado";
+          break;
+      }
+      return data3;
+    }
+
     data3.info.participants.forEach((id, index) => {
-        data3.info.participants[index].championName = champions.find(
-          (element) => element.id == id.championId
-        ).name;
+      data3.info.participants[index].championName = champions.find(
+        (element) => element.id == id.championId
+      ).name;
     });
 
-    return data3
+    return data3;
   }
 
   async inGame(name) {
@@ -307,25 +353,28 @@ class LolApi {
     let data2 = await response2.json();
 
     if (data.status) {
-      console.log(data.status.status_code)
       switch (data.status.status_code) {
-        case '403':
+        case 403:
           data2 = "Key Inválida";
           break;
 
-        case '429':
+        case 429:
           data2 = "Rate Limit Excedido";
           break;
 
-        case '401':
+        case 401:
           data2 = "Não Autorizado";
           break;
 
-        case '404':
+        case 404:
+          data2 = "Usuário Não Encontrado";
+          break;
+
+        case 400:
           data2 = "Usuário Não Encontrado";
           break;
       }
-      return data
+      return data2;
     }
 
     if (data2.status) {
@@ -343,10 +392,14 @@ class LolApi {
           break;
 
         case 404:
-          data2 = 'Usuário Não Está Em Partida'
+          data2 = "Usuário Não Está Em Partida";
+          break;
+
+        case 400:
+          data = "Usuário Não Encontrado";
           break;
       }
-      return data2
+      return data2;
     }
 
     data2.participants.forEach((id, index) => {
@@ -356,24 +409,21 @@ class LolApi {
 
       id.perks.perkStyle = runes.find(
         (element) => element.id == id.perks.perkStyle
-      ).name
+      ).name;
 
       id.perks.perkSubStyle = runes.find(
         (element) => element.id == id.perks.perkSubStyle
-      ).name
+      ).name;
 
       id.perks.perkIds.forEach((ids, index) => {
         id.perks.perkIds[index] = runes.find(
           (element) => element.id == ids
-        ).name
+        ).name;
       });
+    });
 
-  });
-
-    return data2
-
+    return data2;
   }
-
 }
 
-export default LolApi;
+export default LolApi
