@@ -152,6 +152,9 @@ class LolApi {
       champion.championName = champions.find(
         (element) => element.id == champion.championId
       ).name;
+      champion.championImage = champions.find(
+        (element) => element.id == champion.championId
+      ).image;
     });
 
     const search = {
@@ -324,6 +327,9 @@ class LolApi {
       data3.info.participants[index].championName = champions.find(
         (element) => element.id == id.championId
       ).name;
+      data3.info.participants[index].championImage = champions.find(
+        (element) => element.id == id.championId
+      ).image;
     });
 
     return data3;
@@ -406,6 +412,10 @@ class LolApi {
       id.championName = champions.find(
         (element) => element.id == id.championId
       ).name;
+
+      id.championImage = champions.find(
+        (element) => element.id == id.championId
+      ).image;
 
       id.perks.perkStyle = runes.find(
         (element) => element.id == id.perks.perkStyle
