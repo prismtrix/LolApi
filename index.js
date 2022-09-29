@@ -246,7 +246,17 @@ class LolApi {
       }
     );
 
+    const response4 = await fetch(
+      `https://americas.api.riotgames.com/lol/match/v5/matches/${data2[0]}/timeline`,
+      {
+        method: "GET",
+        headers: { "X-Riot-Token": this.key },
+      }
+    );
+
     let data3 = await response3.json();
+
+    let data4 = await response4.json();
 
     if (data.status) {
       switch (data.status.status_code) {
@@ -323,6 +333,31 @@ class LolApi {
       return data3;
     }
 
+    if (data4.status) {
+      switch (data4.status.status_code) {
+        case 403:
+          data3 = "Key Inválida";
+          break;
+
+        case 429:
+          data3 = "Rate Limit Excedido Aguarde Alguns Minutos";
+          break;
+
+        case 401:
+          data3 = "Não Autorizado";
+          break;
+
+        case 404:
+          data3 = "Não Encontrado";
+          break;
+
+        case 400:
+          data3 = "Usuário Não Encontrado";
+          break;
+      }
+      return data3;
+    }
+
     data3.info.participants.forEach((id, index) => {
       data3.info.participants[index].championName = champions.find(
         (element) => element.id == id.championId
@@ -330,9 +365,14 @@ class LolApi {
       data3.info.participants[index].championImage = champions.find(
         (element) => element.id == id.championId
       ).image;
+
+      id.startGameData = (Object.values(data4.info.frames[0].participantFrames)).find(ch => ch.participantId == id.participantId)
+      id.midGameData = (Object.values(data4.info.frames[~~((data4.info.frames.length - 1) / 2)].participantFrames)).find(ch => ch.participantId == id.participantId)
+      id.endGameData = (Object.values(data4.info.frames[(data4.info.frames.length - 1)].participantFrames)).find(ch => ch.participantId == id.participantId)
+
     });
 
-    return data3;
+    return data3
   }
 
   async inGame(name) {
